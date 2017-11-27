@@ -5,6 +5,9 @@ console.log('Loading function');
 const stationsUrl = 'https://www.oulunliikenne.fi/public_traffic_api/parking/parkingstations.php';
 const stationUrl = 'https://www.oulunliikenne.fi/public_traffic_api/parking/parking_details.php?parkingid=';
 
+const tableName = process.env.tableName;
+console.log(`Using DynamoDB table ${tableName}`);
+
 const request = require("request")
 const doc = require('dynamodb-doc');
 const dynamo = new doc.DynamoDB();
@@ -26,14 +29,11 @@ exports.handler = (event, context, callback) => {
                     json: true
                 }, function (error, response, body) {
                     if (!error && response.statusCode === 200) {
-                        //console.log(body) // Print the json response
                         const address = body['address'];
                         const timestamp = body['timestamp'];
                         const freespace = body['freespace'];
                         const totalspace = body['totalspace'];
                         element.addDetails(timestamp, address, freespace === undefined ? -1 : freespace, totalspace === undefined ? -1 : totalspace);
-
-                        element.printDetails();
 
                         var params = {
                             Item: {
@@ -44,15 +44,14 @@ exports.handler = (event, context, callback) => {
                                 Coordinates: element.geo
                             },
                             ReturnConsumedCapacity: "TOTAL",
-                            TableName: "oulu-parking-dynamodb"
+                            TableName: tableName
                         };
                         console.log(`Adding item: ${JSON.stringify(params)}`);
                         dynamo.putItem(params, function (err, data, id = element.id) {
                             if (err) {
-                                console.log(`Failure, station ${id}: ${err}`, err.stack); // an error occurred
+                                console.log(`Failure (ParkingStationId: ${id}): ${err}`, err.stack); // an error occurred
                             } else {
-                                console.log(`Success: ${JSON.stringify(data)}`);
-                                //console.log(data);           // successful response
+                                console.log(`Success (ParkingStationId: ${id}): ${data}`);
                             }
                         });
                     }
@@ -87,9 +86,5 @@ class Station {
         this.address = address;
         this.freespace = freespace;
         this.totalspace = totalspace;
-    }
-
-    printDetails() {
-        console.log(`Parkingstation: ${this.id}, ${this.name} ${this.geo} ${this.timestamp}, ${this.address} ${this.freespace} ${this.totalspace}`);
     }
 }
