@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        }
+        #map {
+        height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: {lat: 65.01027, lng: 25.472789}
+        });
+
+        var jsonData = $.ajax({
+            //url: 'http://108.61.198.137:8080/parking-api/places',
+            url: 'http://localhost:4567/places',
+            dataType: 'json'
+        }).done(function (results) {
+
+            results.forEach(function(place) {
+                var position = {lat: parseFloat(place["latitude"]), lng: parseFloat(place["longitude"])};
+                console.log("position: " + position);
+                var marker = new google.maps.Marker({
+                  position: position,
+                  map: map,
+                  title: place["title"]
+                });
+
+
+            }); // foreach
+
+        }); // ajax
+
+        map.setCenter({lat: 65.01027, lng: 25.472789});
+      }
+
+    </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgHsBeibst3_ePb0kVIYkz5kchxQbyPg0&callback=initMap"
+        async defer></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</body>
+</html>

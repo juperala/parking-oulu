@@ -1,0 +1,14 @@
+{
+  "name": "oulu-parking-stations",
+  "version": "1.0.0",
+  "description": "AWS Lambda REST API for requesting list of parking stations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "juperala",
+  "license": "Apache License 2.0",
+  "dependencies": {
+    "request": "^2.83.0"
+  }
+}

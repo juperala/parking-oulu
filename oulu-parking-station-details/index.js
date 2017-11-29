@@ -5,10 +5,11 @@ console.log('Loading function');
 const stationsUrl = 'https://www.oulunliikenne.fi/public_traffic_api/parking/parkingstations.php';
 const stationUrl = 'https://www.oulunliikenne.fi/public_traffic_api/parking/parking_details.php?parkingid=';
 
-const tableName = process.env.tableName;
-console.log(`Using DynamoDB table ${tableName}`);
+const stationsTableName = process.env.stationsTableName;
+const stationStatusTableName = process.env.stationStatusTableName;
+console.log(`Using DynamoDB tables ${stationsTableName}, ${stationStatusTableName}`);
 
-const request = require("request")
+const request = require("request");
 const doc = require('dynamodb-doc');
 const dynamo = new doc.DynamoDB();
 
@@ -35,25 +36,8 @@ exports.handler = (event, context, callback) => {
                         const totalspace = body['totalspace'];
                         element.addDetails(timestamp, address, freespace === undefined ? -1 : freespace, totalspace === undefined ? -1 : totalspace);
 
-                        var params = {
-                            Item: {
-                                ParkingStationId: Number(element.id),
-                                Timestamp: element.timestamp,
-                                Freespace: element.freespace,
-                                Totalspace: element.totalspace,
-                                Coordinates: element.geo
-                            },
-                            ReturnConsumedCapacity: "TOTAL",
-                            TableName: tableName
-                        };
-                        console.log(`Adding item: ${JSON.stringify(params)}`);
-                        dynamo.putItem(params, function (err, data, id = element.id) {
-                            if (err) {
-                                console.log(`Failure (ParkingStationId: ${id}): ${err}`, err.stack); // an error occurred
-                            } else {
-                                console.log(`Success (ParkingStationId: ${id}): ${data}`);
-                            }
-                        });
+                        updateStationInfo(element);
+                        updateStationStatus(element)
                     }
                 });
             });
@@ -70,6 +54,49 @@ function parseStations(stationList) {
     });
     return stations;
 }
+
+function updateStationInfo(station) {
+    var params = {
+        Item: {
+            ParkingStationId: Number(station.id),
+            Name: station.name,
+            Address: station.address,
+            Coordinates: station.geo
+        },
+        ReturnConsumedCapacity: "TOTAL",
+        TableName: stationsTableName
+    };
+    console.log(`Updating station base information: ${JSON.stringify(params)}`);
+    dynamo.putItem(params, function (err, data, id = station.id) {
+        if (err) {
+            console.log(`Failure updating base information (ParkingStationId: ${id}): ${err}`, err.stack);
+        } else {
+            console.log(`Success updating base information (ParkingStationId: ${id}): ${data}`);
+        }
+    });
+}
+
+function updateStationStatus(station) {
+    var params = {
+        Item: {
+            ParkingStationId: Number(station.id),
+            Timestamp: station.timestamp,
+            Freespace: station.freespace,
+            Totalspace: station.totalspace
+        },
+        ReturnConsumedCapacity: "TOTAL",
+        TableName: stationStatusTableName
+    };
+    console.log(`Updating station status information: ${JSON.stringify(params)}`);
+    dynamo.putItem(params, function (err, data, id = station.id) {
+        if (err) {
+            console.log(`Failure updating station status (ParkingStationId: ${id}): ${err}`, err.stack);
+        } else {
+            console.log(`Success updating station status (ParkingStationId: ${id}): ${data}`);
+        }
+    });
+}
+
 
 /**
  * Class presenting parking station.
