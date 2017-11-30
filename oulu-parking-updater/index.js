@@ -80,7 +80,7 @@ function updateStationStatus(station) {
     var params = {
         Item: {
             ParkingStationId: Number(station.id),
-            Timestamp: station.timestamp,
+            Timestamp: formatDateToISO(station.timestamp),
             Freespace: station.freespace,
             Totalspace: station.totalspace
         },
@@ -97,6 +97,13 @@ function updateStationStatus(station) {
     });
 }
 
+function formatDateToISO(original) {
+    // 29.11.2017 13:50:37
+    const [date, time] = original.split(' ');
+    const [day, month, year] = date.split('.');
+    const [hour, minutes, seconds] = time.split(':');
+    return new Date(year, month, day, hour, minutes, seconds).toISOString();    
+}
 
 /**
  * Class presenting parking station.
