@@ -23,14 +23,23 @@ exports.handler = (event, context, callback) => {
 
     switch (event.httpMethod) {
         case 'GET':
+            const stationId = event.queryStringParameters.ParkingStationId;
+            const start = event.queryStringParameters.from;
+            const end = event.queryStringParameters.to;
             var params = {
-                FilterExpression: "ParkingStationId = :value",
+                FilterExpression: "(ParkingStationId = :id) AND (#timestamp between :start and :stop)",
                 ExpressionAttributeValues: {
-                    ":value": event.queryStringParameters.ParkingStationId
-                  },
+                    ":id": Number(stationId),
+                    ":start": start ? start : new Date("2000").toISOString(),
+                    ":stop": end ? end : new Date().toISOString()
+                },
+                ExpressionAttributeNames: {
+                    "#timestamp": "Timestamp"
+                },
                 ReturnConsumedCapacity: "TOTAL",
                 TableName: tableName
             };
+            console.log(`Sending params: ${JSON.stringify(params)}`);
             dynamo.scan(params, done);
             break;
         default:
