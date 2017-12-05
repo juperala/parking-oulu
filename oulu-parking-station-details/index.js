@@ -22,7 +22,7 @@ exports.handler = (event, context, callback) => {
     });
 
     switch (event.httpMethod) {
-        case 'GET':
+        case 'GET': {
             const stationId = event.queryStringParameters.ParkingStationId;
             const start = event.queryStringParameters.from;
             const end = event.queryStringParameters.to;
@@ -42,6 +42,7 @@ exports.handler = (event, context, callback) => {
             console.log(`Sending params: ${JSON.stringify(params)}`);
             dynamo.scan(params, done);
             break;
+        }
         default:
             done(new Error(`Unsupported method "${event.httpMethod}"`));
     }
