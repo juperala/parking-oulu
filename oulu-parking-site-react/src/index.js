@@ -14,7 +14,7 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 ReactDOM.render(
     <div>
     <div><ParkMap isMarkerShown /></div>
-    <div><ParkChart /></div>
+    {/*<div><ParkChart /></div>*/}
   </div>, document.getElementById('root'));
 
 //ReactDOM.render(<ParkMap isMarkerShown />, document.getElementById('root'));
