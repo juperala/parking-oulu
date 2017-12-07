@@ -46,6 +46,7 @@ exports.handler = (event, context, callback) => {
 };
 
 function parseStations(stationList) {
+    new Date()
     let stations = stationList.map(element => {
         const id = element['id'];
         const geo = JSON.parse(element['geom'])['coordinates'];
@@ -102,7 +103,7 @@ function formatDateToISO(original) {
     const [date, time] = original.split(' ');
     const [day, month, year] = date.split('.');
     const [hour, minutes, seconds] = time.split(':');
-    return new Date(year, month, day, hour, minutes, seconds).toISOString();    
+    return new Date(year, month-1, day, hour, minutes, seconds).toISOString();    
 }
 
 /**

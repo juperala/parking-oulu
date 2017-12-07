@@ -5,20 +5,26 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  render() {
-    return (
-      /* 
-      <div className="App">
-              <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <h1 className="App-title">Welcome to React</h1>
-              </header>
-              <p className="App-intro">
-                To get started, edit <code>src/App.js</code> and save to reload.
-              </p>
-            </div>
-       */
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectionId: -1,
+    };
+    this.handleStationClick = this.handleStationClick.bind(this);
+  }
+
+
+  handleStationClick(id) {
+    console.log(`Parking station clicked ${id}`);
+    this.setState({
+      selectionId: id,
+    });
+  }
+
+  render() {
+    console.log(`Rendering App.`);
+    return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -26,24 +32,13 @@ class App extends Component {
         </header>
         <div>
           <div style={{ position: 'absolute', left: 0, top: 200, width: '50%', height: '100%' }}>
-            <ParkMap isMarkerShown />
+            <ParkMap isMarkerShown onClick={this.handleStationClick} />
           </div>
           <div style={{ position: 'absolute', right: 0, top: 200, width: '50%', height: '100%' }}>
-            <ParkChart />
+            {(this.state.selectionId !== -1) && <ParkChart key={this.state.selectionId} stationId={this.state.selectionId}/>}
           </div>
         </div>
       </div>
-
-      /* 
-            <div>
-              <div style={{ position: 'absolute', left: 0, top: 0, width: '38%', height: '100%' }}>
-                <ParkMap isMarkerShown />
-              </div>
-              <div style={{ position: 'absolute', right: 0, top: 0, width: '62%', height: '100%' }}>
-                <ParkChart />
-              </div>
-            </div>
-       */
     );
   }
 }

@@ -18,10 +18,11 @@ position: sticky;
 `;
 
 class ParkMap extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = { items: [] };
   }
+
   componentDidMount() {
     console.log(`Mounting`);
     fetch(`https://api.oulunparkit.com/parkingstations`)
@@ -31,21 +32,14 @@ class ParkMap extends Component {
 
   render() {
     const stations = this.state.items['Items'];
-    console.log(`Rendering: ${JSON.stringify(stations)}`);
+    console.log(`ParkMap rendering: ${JSON.stringify(stations)}`);
 
     let listItems;
     if (stations) {
-      console.log(`Parsing ListItems`);
-      stations.map((element) => {
-        console.log(`ListItems: ${element.ParkingStationId}`);
-        console.log(`ListItems: ${element.Coordinates[1]}`);
-        console.log(`ListItems: ${element.Coordinates[0]}`);
-        console.log(`ListItems: ${element.Name}`);
-      });
       listItems = stations.map((element) =>
         <ParkButton primary key={element.ParkingStationId}
           lat={element.Coordinates[1]}
-          lng={element.Coordinates[0]}>{element.Name}</ParkButton>
+          lng={element.Coordinates[0]} onClick={() => this.props.onClick(element.ParkingStationId)}>{element.Name}</ParkButton>
       );
     };
 

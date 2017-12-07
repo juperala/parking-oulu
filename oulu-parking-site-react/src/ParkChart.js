@@ -1,9 +1,54 @@
 import React, { Component } from 'react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 
-export default class ParkChart extends Component {
+class ParkChart extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { items: [] };
+  }
+
+  componentDidMount() {
+    console.log(`Mounting`);
+    //const url = `https://api.oulunparkit.com/parkingstationdetails?ParkingStationId=${this.props.stationId}&to=${new Date().toISOString()}`;
+    //const url = `https://api.oulunparkit.com/parkingstationdetails?ParkingStationId=${this.props.stationId}&to=2017-12-30T19:49:46.000Z`;
+    const url = `https://api.oulunparkit.com/parkingstationdetails?ParkingStationId=${this.props.stationId}`;
+    console.log(`Using url: ${url}`);
+    fetch(url)
+      .then(result => result.json())
+      .then(items => this.setState({ items }));
+
+    // 2017-12-30T19:49:46.000Z
+    // 2017-12-07T18:25:59.048Z
+  }
 
   render() {
+    const details = this.state.items['Items'];
+    console.log(`ParkChart: Rendering ${JSON.stringify(details)}`);
+    let listItems;
+    if (details) {
+      listItems = details.map((e) => {
+        return {
+          FreeSpace: Number(e.Freespace),
+          TotalSpace: Number(e.Totalspace),
+          TimeStamp: e.Timestamp
+        };
+      });
+      console.log(`ParkChart: listItems ${JSON.stringify(listItems)}`);
+    }
+
+    return (
+      <LineChart width={600} height={300} data={listItems}>
+        <Line type="monotone" dataKey="TotalSpace" stroke="#4884d8" />
+        <Line type="monotone" dataKey="FreeSpace" stroke="#8884d8" />
+        <CartesianGrid stroke="#ccc" />
+        {<XAxis dataKey="TimeStamp" />}
+        <YAxis />
+      </LineChart>
+    );
+  }
+
+  /* 
     const data = [
       {
         date: '16.8',
@@ -26,15 +71,8 @@ export default class ParkChart extends Component {
         age: 32,
       },
     ];
-    return (
-      <LineChart width={600} height={300} data={data}>
-        <Line type="monotone" dataKey="age" stroke="#8884d8" />
-        <Line type="monotone" dataKey="BMI" stroke="#8884d8" />
-        <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="date" />
-        <YAxis />
-      </LineChart>
-    );
-  }
+   */
+
 }
 
+export default ParkChart;
