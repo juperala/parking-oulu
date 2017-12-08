@@ -10,39 +10,23 @@ class ParkChart extends Component {
 
   componentDidMount() {
     console.log(`Mounting`);
-    //const url = `https://api.oulunparkit.com/parkingstationdetails?ParkingStationId=${this.props.stationId}&to=${new Date().toISOString()}`;
-    //const url = `https://api.oulunparkit.com/parkingstationdetails?ParkingStationId=${this.props.stationId}&to=2017-12-30T19:49:46.000Z`;
     const url = `https://api.oulunparkit.com/parkingstationdetails?ParkingStationId=${this.props.stationId}`;
     console.log(`Using url: ${url}`);
     fetch(url)
       .then(result => result.json())
       .then(items => this.setState({ items }));
-
-    // 2017-12-30T19:49:46.000Z
-    // 2017-12-07T18:25:59.048Z
   }
 
   render() {
-    const details = this.state.items['Items'];
-    console.log(`ParkChart: Rendering ${JSON.stringify(details)}`);
-    let listItems;
-    if (details) {
-      listItems = details.map((e) => {
-        return {
-          FreeSpace: Number(e.Freespace),
-          TotalSpace: Number(e.Totalspace),
-          TimeStamp: e.Timestamp
-        };
-      });
-      console.log(`ParkChart: listItems ${JSON.stringify(listItems)}`);
-    }
-
+    const data = Array.from(this.state.items);
+    console.log(`ParkChart: Using data ${JSON.stringify(data)}`);
+    
     return (
-      <LineChart width={600} height={300} data={listItems}>
-        <Line type="monotone" dataKey="TotalSpace" stroke="#4884d8" />
-        <Line type="monotone" dataKey="FreeSpace" stroke="#8884d8" />
+      <LineChart width={600} height={300} data={data}>
+        <Line type="monotone" dataKey="Totalspace" stroke="#4884d8" />
+        <Line type="monotone" dataKey="Freespace" stroke="#8884d8" />
         <CartesianGrid stroke="#ccc" />
-        {<XAxis dataKey="TimeStamp" />}
+        {<XAxis dataKey="Timestamp" />}
         <YAxis />
       </LineChart>
     );
