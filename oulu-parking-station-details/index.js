@@ -15,14 +15,15 @@ exports.handler = (event, context, callback) => {
 
     const done = (err, res) => callback(null, {
         statusCode: err ? '400' : '200',
-        body: err ? err.message : JSON.stringify(res),
+        body: err ? err.message : JSON.stringify(res['Items']),
         headers: {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
         },
     });
 
     switch (event.httpMethod) {
-        case 'GET': {
+        case 'GET':
             const stationId = event.queryStringParameters.ParkingStationId;
             const start = event.queryStringParameters.from;
             const end = event.queryStringParameters.to;
@@ -30,7 +31,7 @@ exports.handler = (event, context, callback) => {
                 FilterExpression: "(ParkingStationId = :id) AND (#timestamp between :start and :stop)",
                 ExpressionAttributeValues: {
                     ":id": Number(stationId),
-                    ":start": start ? start : new Date("2000").toISOString(),
+                    ":start": start ? start : new Date(0).toISOString(),
                     ":stop": end ? end : new Date().toISOString()
                 },
                 ExpressionAttributeNames: {
@@ -42,7 +43,6 @@ exports.handler = (event, context, callback) => {
             console.log(`Sending params: ${JSON.stringify(params)}`);
             dynamo.scan(params, done);
             break;
-        }
         default:
             done(new Error(`Unsupported method "${event.httpMethod}"`));
     }

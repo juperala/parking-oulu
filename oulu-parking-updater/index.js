@@ -32,9 +32,9 @@ exports.handler = (event, context, callback) => {
                     if (!error && response.statusCode === 200) {
                         const address = body['address'];
                         const timestamp = body['timestamp'];
-                        const freespace = body['freespace'];
-                        const totalspace = body['totalspace'];
-                        element.addDetails(timestamp, address, freespace === undefined ? -1 : freespace, totalspace === undefined ? -1 : totalspace);
+                        const freespace = body['freespace'] ? Number(body['freespace']) : -1;
+                        const totalspace = body['totalspace'] ? Number(body['totalspace']) : -1;
+                        element.addDetails(timestamp, address, freespace, totalspace);
 
                         updateStationInfo(element);
                         updateStationStatus(element)
@@ -46,9 +46,8 @@ exports.handler = (event, context, callback) => {
 };
 
 function parseStations(stationList) {
-    new Date()
     let stations = stationList.map(element => {
-        const id = element['id'];
+        const id = Number(element['id']);
         const geo = JSON.parse(element['geom'])['coordinates'];
         const name = element['name'];
         return new Station(id, geo, name);
@@ -59,10 +58,12 @@ function parseStations(stationList) {
 function updateStationInfo(station) {
     var params = {
         Item: {
-            ParkingStationId: Number(station.id),
+            ParkingStationId: station.id,
             Name: station.name,
             Address: station.address,
-            Coordinates: station.geo
+            Coordinates: station.geo,
+            Freespace: station.freespace,
+            Totalspace: station.totalspace
         },
         ReturnConsumedCapacity: "TOTAL",
         TableName: stationsTableName
@@ -80,7 +81,7 @@ function updateStationInfo(station) {
 function updateStationStatus(station) {
     var params = {
         Item: {
-            ParkingStationId: Number(station.id),
+            ParkingStationId: station.id,
             Timestamp: formatDateToISO(station.timestamp),
             Freespace: station.freespace,
             Totalspace: station.totalspace
@@ -103,7 +104,7 @@ function formatDateToISO(original) {
     const [date, time] = original.split(' ');
     const [day, month, year] = date.split('.');
     const [hour, minutes, seconds] = time.split(':');
-    return new Date(year, month-1, day, hour, minutes, seconds).toISOString();    
+    return new Date(year, month - 1, day, hour, minutes, seconds).toISOString();
 }
 
 /**
