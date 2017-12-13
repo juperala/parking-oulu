@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-//import ParkButton from './ParkButton';
 import styled from 'styled-components';
 
 const ParkButton = styled.button`
 background: ${props => props.color};
-color: 'white';
-
+color: black;
 font-size: 1em;
 margin: 1em;
 padding: 0.25em 1em;
@@ -22,7 +20,7 @@ class ParkMap extends Component {
   }
 
   componentDidMount() {
-    console.log(`Mounting`);
+    //console.log(`Mounting`);
     fetch(`https://api.oulunparkit.com/parkingstations`)
       .then(result => result.json())
       .then(items => this.setState({ items }));
@@ -43,8 +41,7 @@ class ParkMap extends Component {
   }
 
   render() {
-    const stations = this.state.items;
-    console.log(`ParkMap: Using data ${JSON.stringify(this.state.items)}`);
+    //console.log(`ParkMap: Using data ${JSON.stringify(this.state.items)}`);
 
     const data = this.state.items.map((element) => {
       const title = `${element.Name} ${(element.Totalspace !== -1) ? `${element.Freespace}/${element.Totalspace}` : ''}`;

@@ -32,8 +32,8 @@ exports.handler = (event, context, callback) => {
                     if (!error && response.statusCode === 200) {
                         const address = body['address'];
                         const timestamp = body['timestamp'];
-                        const freespace = body['freespace'] ? Number(body['freespace']) : -1;
-                        const totalspace = body['totalspace'] ? Number(body['totalspace']) : -1;
+                        const freespace = body['freespace'];
+                        const totalspace = body['totalspace'];
                         element.addDetails(timestamp, address, freespace, totalspace);
 
                         updateStationInfo(element);
@@ -83,8 +83,8 @@ function updateStationStatus(station) {
         Item: {
             ParkingStationId: station.id,
             Timestamp: formatDateToISO(station.timestamp),
-            Freespace: station.freespace,
-            Totalspace: station.totalspace
+            ...(typeof station.freespace !== undefined) &&  {Freespace: station.freespace},
+            ...(typeof station.totalspace !== undefined) &&  {Totalspace: station.totalspace}
         },
         ReturnConsumedCapacity: "TOTAL",
         TableName: stationStatusTableName
@@ -120,7 +120,9 @@ class Station {
     addDetails(timestamp, address, freespace, totalspace) {
         this.timestamp = timestamp;
         this.address = address;
-        this.freespace = freespace;
-        this.totalspace = totalspace;
+        if (typeof freespace !== undefined)
+            this.freespace = freespace;
+        if (typeof totalspace !== undefined)
+            this.totalspace = totalspace;
     }
 }
