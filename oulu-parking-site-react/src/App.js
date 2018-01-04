@@ -20,10 +20,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectionId: -1,
+      history: 4,
+      station: null,
       modalIsOpen: false
     };
     this.handleStationClick = this.handleStationClick.bind(this);
+    this.handleSetHistory = this.handleSetHistory.bind(this);
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -42,11 +44,19 @@ class App extends Component {
     this.setState({ modalIsOpen: false });
   }
 
-  handleStationClick(id) {
+  handleStationClick(s) {
     //console.log(`Parking station clicked ${id}`);
     this.setState({
-      selectionId: id,
+      station: s,
+      //   selectionId: id,
       modalIsOpen: true
+    });
+  }
+
+  handleSetHistory(days) {
+    console.log(`Setting history ${days}`);
+    this.setState({
+      history: days
     });
   }
 
@@ -74,15 +84,38 @@ class App extends Component {
               onAfterOpen={this.afterOpenModal}
               onRequestClose={this.closeModal}
               style={modalStyles}
-              contentLabel="Example Modal"
+              contentLabel="Parking station details"
               ariaHideApp={false}
             >
-              <h2 ref={subtitle => (this.subtitle = subtitle)}>Hello</h2>
               <button onClick={this.closeModal}>close</button>
-              <div>I am a modal</div>
+              <h2 ref={subtitle => (this.subtitle = subtitle)}>
+                {this.state.station && this.state.station.Name}
+              </h2>
+              <div>
+                <span>Osoite:</span>{" "}
+                {this.state.station && this.state.station.Address}
+              </div>
+              <div>
+                <span>Käyttöaste:</span>{" "}
+                {this.state.station &&
+                  this.state.station.Freespace +
+                    " / " +
+                    this.state.station.Totalspace}
+              </div>
+              <div>
+                Käyttöhistoria:
+                <button onClick={() => this.handleSetHistory(1)}>1 VRK</button>
+                <button onClick={() => this.handleSetHistory(7)}>7 VRK</button>
+                <button onClick={() => this.handleSetHistory(30)}>
+                  30 VRK
+                </button>
+              </div>
               <ParkChart
-                key={this.state.selectionId}
-                stationId={this.state.selectionId}
+                key={this.state.station && this.state.station.ParkingStationId}
+                stationId={
+                  this.state.station && this.state.station.ParkingStationId
+                }
+                history={this.state.history}
               />
             </Modal>
           </div>

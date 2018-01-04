@@ -53,7 +53,7 @@ class ParkMap extends Component {
           key={element.ParkingStationId}
           lat={element.Coordinates[1]}
           lng={element.Coordinates[0]}
-          onClick={() => this.props.onClick(element.ParkingStationId)}
+          onClick={() => this.props.onClick(element)}
         >
           {title}
         </ParkButton>
@@ -61,10 +61,10 @@ class ParkMap extends Component {
     });
 
     let apiKey = null;
-    if(process.env.NODE_ENV !== "development") {
+    if (process.env.NODE_ENV !== "development") {
       apiKey = {
         key: "AIzaSyBTn6wFPf0DHTf7UL9CZ_hHbI2dldqdzUk"
-      }
+      };
     }
 
     return (
@@ -72,7 +72,7 @@ class ParkMap extends Component {
         defaultCenter={this.props.center}
         defaultZoom={this.props.zoom}
         style={{ height: "300px" }}
-        bootstrapURLKeys={apiKey}        
+        bootstrapURLKeys={apiKey}
       >
         {data}
       </GoogleMapReact>
