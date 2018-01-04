@@ -1,23 +1,22 @@
-import React, { Component } from 'react';
-import ParkMap from './ParkMap';
-import ParkChart from './ParkChart';
-import logo from './logo.svg';
-import './App.css';
-import Modal from 'react-modal';
+import React, { Component } from "react";
+import ParkMap from "./ParkMap";
+import ParkChart from "./ParkChart";
+import logo from "./logo.svg";
+import "./App.css";
+import Modal from "react-modal";
 
 const modalStyles = {
   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)"
   }
 };
 
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -36,7 +35,7 @@ class App extends Component {
 
   afterOpenModal() {
     // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
+    this.subtitle.style.color = "#f00";
   }
 
   closeModal() {
@@ -60,7 +59,15 @@ class App extends Component {
           <h1 className="App-title">Oulun Parkit</h1>
         </header>
         <div>
-          <div style={{ position: 'absolute', left: 0, top: 200, width: '100%', height: '100%' }}>
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 200,
+              width: "100%",
+              height: "100%"
+            }}
+          >
             <ParkMap isMarkerShown onClick={this.handleStationClick} />
             <Modal
               isOpen={this.state.modalIsOpen}
@@ -68,12 +75,15 @@ class App extends Component {
               onRequestClose={this.closeModal}
               style={modalStyles}
               contentLabel="Example Modal"
+              ariaHideApp={false}
             >
-
-              <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
+              <h2 ref={subtitle => (this.subtitle = subtitle)}>Hello</h2>
               <button onClick={this.closeModal}>close</button>
               <div>I am a modal</div>
-              <ParkChart key={this.state.selectionId} stationId={this.state.selectionId} />
+              <ParkChart
+                key={this.state.selectionId}
+                stationId={this.state.selectionId}
+              />
             </Modal>
           </div>
         </div>
