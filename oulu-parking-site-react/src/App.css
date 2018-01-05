@@ -3,24 +3,25 @@
 }
 
 .App-header {
-  background-color: lightskyblue;
-  height: 150px;
-  padding: 20px;
-  color: white;
+  /* background-color: lightskyblue; */
+  height: 80px;
+  /* padding: 20px; */
+  color: #204a87;
   /* vertical-align: middle; */
 }
 
 .App-logo {
   float: left;
   /* animation: App-logo-spin infinite 20s linear; */
-  height: 80px;
-  padding: 20px;
+  height: 40px;
+  padding-left: 20px;
 }
 
 .App-title {
   /* font-size: 1.5em;*/
-  font-size: 50px;
+  font-size: 40px;
   text-align: left;
+  padding-left: 80px;
   /*display: inline;*/
 }
 

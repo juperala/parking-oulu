@@ -4,6 +4,8 @@ import ParkChart from "./ParkChart";
 import logo from "./logo.svg";
 import "./App.css";
 import Modal from "react-modal";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import 'react-tabs/style/react-tabs.css';
 
 const modalStyles = {
   content: {
@@ -66,16 +68,23 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">#OulunParkit</h1>
+          <h1 className="App-title">Oulun Parkit</h1>
         </header>
-        <div>
-          <div
+        <Tabs>
+          <TabList>
+            <Tab>Karttanäkymä</Tab>
+            <Tab>Listanäkymä</Tab>
+          </TabList>
+
+          <TabPanel>
+            <div
             style={{
-              position: "absolute",
+              // position: "absolute",
+              position: "relative",
               left: 0,
-              top: 200,
+              top: 0,
               width: "100%",
-              height: "100%"
+              height: "800px"
             }}
           >
             <ParkMap isMarkerShown onClick={this.handleStationClick} />
@@ -119,6 +128,12 @@ class App extends Component {
               />
             </Modal>
           </div>
+          </TabPanel>
+          <TabPanel>
+            <h2>Any content 2</h2>
+          </TabPanel>
+        </Tabs>
+        <div>
         </div>
       </div>
     );
