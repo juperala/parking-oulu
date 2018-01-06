@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import ParkMap from "./ParkMap";
+import ParkList from "./ParkList";
 import ParkChart from "./ParkChart";
 import logo from "./logo.svg";
 import "./App.css";
 import Modal from "react-modal";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import 'react-tabs/style/react-tabs.css';
+import "react-tabs/style/react-tabs.css";
 
 const modalStyles = {
   content: {
@@ -78,63 +79,60 @@ class App extends Component {
 
           <TabPanel>
             <div
-            style={{
-              // position: "absolute",
-              position: "relative",
-              left: 0,
-              top: 0,
-              width: "100%",
-              height: "800px"
-            }}
-          >
-            <ParkMap isMarkerShown onClick={this.handleStationClick} />
-            <Modal
-              isOpen={this.state.modalIsOpen}
-              onAfterOpen={this.afterOpenModal}
-              onRequestClose={this.closeModal}
-              style={modalStyles}
-              contentLabel="Parking station details"
-              ariaHideApp={false}
+              style={{
+                // position: "absolute",
+                position: "relative",
+                left: 0,
+                top: 0,
+                width: "100%",
+                height: "800px"
+              }}
             >
-              <button onClick={this.closeModal}>close</button>
-              <h2 ref={subtitle => (this.subtitle = subtitle)}>
-                {this.state.station && this.state.station.Name}
-              </h2>
-              <div>
-                <span>Osoite:</span>{" "}
-                {this.state.station && this.state.station.Address}
-              </div>
-              <div>
-                <span>Käyttöaste:</span>{" "}
-                {this.state.station &&
-                  this.state.station.Freespace +
-                    " / " +
-                    this.state.station.Totalspace}
-              </div>
-              <div>
-                Käyttöhistoria:
-                <button onClick={() => this.handleSetHistory(1)}>1 VRK</button>
-                <button onClick={() => this.handleSetHistory(7)}>7 VRK</button>
-                <button onClick={() => this.handleSetHistory(30)}>
-                  30 VRK
-                </button>
-              </div>
-              <ParkChart
-                key={this.state.station && this.state.station.ParkingStationId}
-                stationId={
-                  this.state.station && this.state.station.ParkingStationId
-                }
-                history={this.state.history}
-              />
-            </Modal>
-          </div>
+              <ParkMap isMarkerShown onClick={this.handleStationClick} />
+            </div>
           </TabPanel>
           <TabPanel>
-            <h2>Any content 2</h2>
+            <ParkList isMarkerShown onClick={this.handleStationClick} />
           </TabPanel>
         </Tabs>
-        <div>
-        </div>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={modalStyles}
+          contentLabel="Parking station details"
+          ariaHideApp={false}
+        >
+          <button onClick={this.closeModal}>close</button>
+          <h2 ref={subtitle => (this.subtitle = subtitle)}>
+            {this.state.station && this.state.station.Name}
+          </h2>
+          <div>
+            <span>Osoite:</span>{" "}
+            {this.state.station && this.state.station.Address}
+          </div>
+          <div>
+            <span>Käyttöaste:</span>{" "}
+            {this.state.station &&
+              this.state.station.Freespace +
+                " / " +
+                this.state.station.Totalspace}
+          </div>
+          <div>
+            Käyttöhistoria:
+            <button onClick={() => this.handleSetHistory(1)}>1 VRK</button>
+            <button onClick={() => this.handleSetHistory(7)}>7 VRK</button>
+            <button onClick={() => this.handleSetHistory(30)}>30 VRK</button>
+          </div>
+          <ParkChart
+            key={this.state.station && this.state.station.ParkingStationId}
+            stationId={
+              this.state.station && this.state.station.ParkingStationId
+            }
+            history={this.state.history}
+          />
+        </Modal>
+        <div />
       </div>
     );
   }

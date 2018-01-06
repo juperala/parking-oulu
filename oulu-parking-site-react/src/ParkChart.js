@@ -48,7 +48,7 @@ class ParkChart extends Component {
         <CartesianGrid stroke="#ccc" />
         <XAxis
           dataKey="Timestamp"
-          tickFormatter={this.props.history == 1 ? this.timeFormat : this.dateFormat}
+          tickFormatter={this.props.history === 1 ? this.timeFormat : this.dateFormat}
           tickCount={4}
           minTickGap={8}
         />
