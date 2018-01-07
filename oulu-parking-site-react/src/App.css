@@ -29,14 +29,13 @@
   font-size: large;
 }
 
-/* @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
+.App-map {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 800px;
+}
 
 .itemi {
   width: 60%;
@@ -45,4 +44,8 @@
   box-shadow: 0 2px 4px #ccc;
   padding: 16px;
   text-align: center;
+}
+
+.itemi:hover {
+  background-color: lightgrey;
 }

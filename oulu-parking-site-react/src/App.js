@@ -1,23 +1,11 @@
 import React, { Component } from "react";
 import ParkMap from "./ParkMap";
 import ParkList from "./ParkList";
-import ParkChart from "./ParkChart";
+import ParkModal from "./ParkModal";
 import logo from "./logo.svg";
 import "./App.css";
-import Modal from "react-modal";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-
-const modalStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)"
-  }
-};
 
 class App extends Component {
   constructor(props) {
@@ -30,17 +18,11 @@ class App extends Component {
     this.handleStationClick = this.handleStationClick.bind(this);
     this.handleSetHistory = this.handleSetHistory.bind(this);
     this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
   openModal() {
     this.setState({ modalIsOpen: true });
-  }
-
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    this.subtitle.style.color = "#f00";
   }
 
   closeModal() {
@@ -51,7 +33,6 @@ class App extends Component {
     //console.log(`Parking station clicked ${id}`);
     this.setState({
       station: s,
-      //   selectionId: id,
       modalIsOpen: true
     });
   }
@@ -64,7 +45,6 @@ class App extends Component {
   }
 
   render() {
-    //console.log(`Rendering App.`);
     return (
       <div className="App">
         <header className="App-header">
@@ -76,18 +56,8 @@ class App extends Component {
             <Tab>Karttanäkymä</Tab>
             <Tab>Listanäkymä</Tab>
           </TabList>
-
           <TabPanel>
-            <div
-              style={{
-                // position: "absolute",
-                position: "relative",
-                left: 0,
-                top: 0,
-                width: "100%",
-                height: "800px"
-              }}
-            >
+            <div className="App-map">
               <ParkMap isMarkerShown onClick={this.handleStationClick} />
             </div>
           </TabPanel>
@@ -95,43 +65,13 @@ class App extends Component {
             <ParkList isMarkerShown onClick={this.handleStationClick} />
           </TabPanel>
         </Tabs>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
-          style={modalStyles}
-          contentLabel="Parking station details"
-          ariaHideApp={false}
-        >
-          <button onClick={this.closeModal}>close</button>
-          <h2 ref={subtitle => (this.subtitle = subtitle)}>
-            {this.state.station && this.state.station.Name}
-          </h2>
-          <div>
-            <span>Osoite:</span>{" "}
-            {this.state.station && this.state.station.Address}
-          </div>
-          <div>
-            <span>Käyttöaste:</span>{" "}
-            {this.state.station &&
-              this.state.station.Freespace +
-                " / " +
-                this.state.station.Totalspace}
-          </div>
-          <div>
-            Käyttöhistoria:
-            <button onClick={() => this.handleSetHistory(1)}>1 VRK</button>
-            <button onClick={() => this.handleSetHistory(7)}>7 VRK</button>
-            <button onClick={() => this.handleSetHistory(30)}>30 VRK</button>
-          </div>
-          <ParkChart
-            key={this.state.station && this.state.station.ParkingStationId}
-            stationId={
-              this.state.station && this.state.station.ParkingStationId
-            }
-            history={this.state.history}
-          />
-        </Modal>
+        <ParkModal
+          modalIsOpen={this.state.modalIsOpen}
+          closeModal={this.closeModal}
+          station={this.state.station}
+          history={this.state.history}
+          handleSetHistory={this.handleSetHistory}
+        />
         <div />
       </div>
     );

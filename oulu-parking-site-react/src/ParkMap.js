@@ -1,17 +1,6 @@
 import React, { Component } from "react";
 import GoogleMapReact from "google-map-react";
-import styled from "styled-components";
-
-const ParkButton = styled.button`
-  background: ${props => props.color};
-  color: black;
-  font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
-  border: 2px solid ${props => props.color};
-  border-radius: 3px;
-  position: sticky;
-`;
+import ParkButton from "./ParkButton";
 
 class ParkMap extends Component {
   constructor(props) {
