@@ -1,35 +1,19 @@
-.App {
-  text-align: center;
+.park-main-header {
+  display : flex;
+  align-items : center;
 }
 
-.App-header {
-  /* background-color: lightskyblue; */
-  height: 80px;
-  /* padding: 20px; */
+.park-logo {
+  height: 2.5em;
+}
+
+.park-title {
+  display: inline;
   color: #204a87;
-  /* vertical-align: middle; */
-}
-
-.App-logo {
-  float: left;
-  /* animation: App-logo-spin infinite 20s linear; */
-  height: 40px;
   padding-left: 20px;
 }
 
-.App-title {
-  /* font-size: 1.5em;*/
-  font-size: 40px;
-  text-align: left;
-  padding-left: 80px;
-  /*display: inline;*/
-}
-
-.App-intro {
-  font-size: large;
-}
-
-.App-map {
+.park-map {
   position: relative;
   left: 0;
   top: 0;
@@ -37,15 +21,15 @@
   height: 800px;
 }
 
-.itemi {
-  width: 60%;
-  margin: auto;
-  border: 1px solid #eee;
-  box-shadow: 0 2px 4px #ccc;
-  padding: 16px;
-  text-align: center;
+.park-card {
+  /* width: 60%; */
+  /* margin: auto; */
+  /* border: 1px solid #eee; */
+  /* box-shadow: 0 2px 4px #ccc; */
+  /* padding: 16px; */
+  /* text-align: center; */
 }
 
-.itemi:hover {
+.park-card:hover {
   background-color: lightgrey;
 }

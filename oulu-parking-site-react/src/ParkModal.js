@@ -16,16 +16,13 @@ const modalStyles = {
 const parkModal = props => (
   <Modal
     isOpen={props.modalIsOpen}
-    //   onAfterOpen={this.afterOpenModal}
     onRequestClose={props.closeModal}
     style={modalStyles}
     contentLabel="Parking station details"
     ariaHideApp={false}
   >
     <button onClick={props.closeModal}>close</button>
-    <h2 /*ref={subtitle => (this.subtitle = subtitle)}*/>
-      {props.station && props.station.Name}
-    </h2>
+    <h2>{props.station && props.station.Name}</h2>
     <div>
       <span>Osoite:</span> {props.station && props.station.Address}
     </div>

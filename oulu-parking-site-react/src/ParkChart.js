@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import DateFormat from "dateformat";
 
 class ParkChart extends Component {
@@ -42,7 +42,8 @@ class ParkChart extends Component {
      // console.log(`ParkChart: Using data ${JSON.stringify(data)}`);
 
     return (
-      <LineChart key={this.state.updated} width={600} height={300} data={data}>
+      <ResponsiveContainer width={600} height={300}>
+      <LineChart key={this.state.updated} data={data}>
         <Line type="monotone" dataKey="Totalspace" stroke="#4884d8" dot={false}/>
         <Line type="monotone" dataKey="Freespace" stroke="#8884d8" dot={false}/>
         <CartesianGrid stroke="#ccc" />
@@ -54,6 +55,7 @@ class ParkChart extends Component {
         />
         <YAxis />
       </LineChart>
+      </ResponsiveContainer>
     );
   }
 }

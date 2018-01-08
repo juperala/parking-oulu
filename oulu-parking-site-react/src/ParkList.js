@@ -35,7 +35,7 @@ class ParkList extends Component {
 
       return (
         <div
-          className="itemi"
+          className="card park-card"
           key={element.ParkingStationId}
           onClick={() => this.props.onClick(element)}
         >

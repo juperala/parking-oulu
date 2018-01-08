@@ -4,6 +4,7 @@ import ParkList from "./ParkList";
 import ParkModal from "./ParkModal";
 import logo from "./logo.svg";
 import "./App.css";
+import "./lit.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
@@ -46,18 +47,19 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Oulun Parkit</h1>
+      <div className="c">
+        <header className="park-main-header">
+          <img src={logo} className="park-logo" alt="logo" />
+          <h1 className="park-title">Oulun Parkit</h1>
         </header>
+
         <Tabs>
           <TabList>
             <Tab>Karttanäkymä</Tab>
             <Tab>Listanäkymä</Tab>
           </TabList>
           <TabPanel>
-            <div className="App-map">
+            <div className="park-map">
               <ParkMap isMarkerShown onClick={this.handleStationClick} />
             </div>
           </TabPanel>
@@ -73,6 +75,11 @@ class App extends Component {
           handleSetHistory={this.handleSetHistory}
         />
         <div />
+
+        <footer>
+          <hr/>
+          <h5>Oulun Parkit - Oulun pysäköintitalojen tilastot netissä. &copy; 2017 </h5>
+        </footer>
       </div>
     );
   }
