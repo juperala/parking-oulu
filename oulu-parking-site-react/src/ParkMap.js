@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import GoogleMapReact from "google-map-react";
 import ParkButton from "./ParkButton";
+import "./App.css";
 
 class ParkMap extends Component {
   constructor(props) {
@@ -57,14 +58,16 @@ class ParkMap extends Component {
     }
 
     return (
-      <GoogleMapReact
-        defaultCenter={this.props.center}
-        defaultZoom={this.props.zoom}
-        style={{ height: "300px" }}
-        bootstrapURLKeys={apiKey}
-      >
-        {data}
-      </GoogleMapReact>
+      <div className="park-map">
+        <GoogleMapReact
+          defaultCenter={this.props.center}
+          defaultZoom={this.props.zoom}
+          style={{ height: "300px" }}
+          bootstrapURLKeys={apiKey}
+        >
+          {data}
+        </GoogleMapReact>
+      </div>
     );
   }
 }

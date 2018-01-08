@@ -7,6 +7,10 @@
   height: 2.5em;
 }
 
+.park-gh-logo {
+  height: 1.2em;
+}
+
 .park-title {
   display: inline;
   color: #204a87;
@@ -21,9 +25,12 @@
   height: 800px;
 }
 
-.park-card {
-}
-
 .park-card:hover {
   background-color: #fa0;
 }
+
+.justify {
+  display: flex;
+  justify-content: space-between;
+  align-items : center;
+} 

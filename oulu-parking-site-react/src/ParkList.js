@@ -26,10 +26,10 @@ class ParkList extends Component {
   render() {
     //console.log(`ParkMap: Using data ${JSON.stringify(this.state.items)}`);
     const data = this.state.items.map(element => {
-      const title = `${element.Name} ${
+      const status = `${
         element.Totalspace !== -1
-          ? `${element.Freespace}/${element.Totalspace}`
-          : ""
+          ? `${element.Freespace} / ${element.Totalspace}`
+          : "Ei tilatietoja"
       }`;
       // const color = ParkList.getColor(element);
 
@@ -39,8 +39,11 @@ class ParkList extends Component {
           key={element.ParkingStationId}
           onClick={() => this.props.onClick(element)}
         >
-          {title}
-        </div>
+          <h5>{element.Name}</h5>
+          <b>Osoite:</b> {element.Address}
+          <br/>
+          <b>Viimeisin käyttöaste:</b> {status}
+      </div>
       );
     });
     return <div>{data}</div>;
