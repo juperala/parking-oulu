@@ -1,2 +1,3 @@
 node_modules
 s3-sync.bat
+s3-cf-invalidate.bat
