@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  Legend,
+  Tooltip
+} from "recharts";
 import DateFormat from "dateformat";
 
 class ParkChart extends Component {
@@ -23,10 +32,11 @@ class ParkChart extends Component {
     const url = `https://api.oulunparkit.com/parkingstationdetails?ParkingStationId=${
       this.props.stationId
     }&from=${from.toISOString()}`;
-    console.log(`Using url: ${url}`);
     fetch(url)
       .then(result => result.json())
-      .then(items => this.setState({ items: items,  updated: new Date().toISOString() }));
+      .then(items =>
+        this.setState({ items: items, updated: new Date().toISOString() })
+      );
   }
 
   dateFormat(x) {
@@ -37,24 +47,44 @@ class ParkChart extends Component {
     return DateFormat(x, "HH:MM");
   }
 
+  dateTimeFormat(x) {
+    return "Aikaleima: " + DateFormat(x, "dd.mm.yy HH:MM");
+  }
+
   render() {
     const data = Array.from(this.state.items);
-     // console.log(`ParkChart: Using data ${JSON.stringify(data)}`);
 
     return (
-      <ResponsiveContainer width={600} height={300}>
-      <LineChart key={this.state.updated} data={data}>
-        <Line type="monotone" dataKey="Totalspace" stroke="#4884d8" dot={false}/>
-        <Line type="monotone" dataKey="Freespace" stroke="#8884d8" dot={false}/>
-        <CartesianGrid stroke="#ccc" />
-        <XAxis
-          dataKey="Timestamp"
-          tickFormatter={this.props.history === 1 ? this.timeFormat : this.dateFormat}
-          tickCount={4}
-          minTickGap={8}
-        />
-        <YAxis />
-      </LineChart>
+      <ResponsiveContainer width={"100%"} height={300}>
+        <LineChart key={this.state.updated} data={data}>
+          <Line
+            type="monotone"
+            dataKey="Totalspace"
+            stroke="#204a87"
+            dot={false}
+            name="Paikkoja yhteensä"
+          />
+          <Line
+            type="monotone"
+            dataKey="Freespace"
+            stroke="#fa0"
+            dot={false}
+            name="Paikkoja vapaana"
+          />
+          <CartesianGrid /* stroke="#fa0" */ />
+          <XAxis
+            // stroke="#fa0"
+            dataKey="Timestamp"
+            tickFormatter={
+              this.props.history === 1 ? this.timeFormat : this.dateFormat
+            }
+            tickCount={4}
+            minTickGap={8}
+          />
+          <YAxis /* stroke="#fa0" */ />
+          <Legend />
+          <Tooltip labelFormatter={this.dateTimeFormat} />
+        </LineChart>
       </ResponsiveContainer>
     );
   }

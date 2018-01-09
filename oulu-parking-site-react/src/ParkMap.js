@@ -20,8 +20,8 @@ class ParkMap extends Component {
     if (element.Freespace === -1) return "lightgray";
     else {
       const free = Math.floor(element.Freespace / element.Totalspace * 100);
-      if (free > 80) return "lightgreen";
-      else if (free > 25) return "lightyellow";
+      if (free > 30) return "lightgreen";
+      else if (free > 15) return "lightyellow";
       else return "palevioletred";
     }
   }
@@ -62,7 +62,6 @@ class ParkMap extends Component {
         <GoogleMapReact
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
-          style={{ height: "300px" }}
           bootstrapURLKeys={apiKey}
         >
           {data}

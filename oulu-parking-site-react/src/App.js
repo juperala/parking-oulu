@@ -13,7 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: 4,
+      history: 7,
       station: null,
       modalIsOpen: false
     };
@@ -28,7 +28,9 @@ class App extends Component {
   }
 
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.setState({
+      modalIsOpen: false,
+      history: 7 });
   }
 
   handleStationClick(s) {
@@ -39,7 +41,6 @@ class App extends Component {
   }
 
   handleSetHistory(days) {
-    console.log(`Setting history ${days}`);
     this.setState({
       history: days
     });

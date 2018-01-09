@@ -42,7 +42,7 @@ class ParkList extends Component {
           <h5>{element.Name}</h5>
           <b>Osoite:</b> {element.Address}
           <br/>
-          <b>Viimeisin käyttöaste:</b> {status}
+          <b>Vapaat parkkipaikat:</b> {status}
       </div>
       );
     });
