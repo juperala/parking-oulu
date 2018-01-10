@@ -1,3 +1,5 @@
 node_modules
-s3-sync.bat
-s3-cf-invalidate.bat
+s3-sync-prod.bat
+s3-cf-invalidate-prod.bat
+s3-sync-dev.bat
+s3-cf-invalidate-dev.bat

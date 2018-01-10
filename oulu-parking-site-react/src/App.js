@@ -48,7 +48,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="c">
+      <div className="c" style={{"padding-top": 0}}>
         <ParkHeader />
         <Tabs>
           <TabList>
