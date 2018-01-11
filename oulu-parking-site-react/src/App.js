@@ -4,7 +4,8 @@ import ParkHeader from "./ParkHeader";
 import ParkFooter from "./ParkFooter";
 import ParkMap from "./ParkMap";
 import ParkList from "./ParkList";
-import ParkModal from "./ParkModal";
+//import ParkModal from "./ParkModal";
+import ParkCard from "./ParkCard";
 import "./App.css";
 import "./lit.css";
 import "react-tabs/style/react-tabs.css";
@@ -50,6 +51,7 @@ class App extends Component {
     return (
       <div className="c" style={{"padding-top": 0}}>
         <ParkHeader />
+        <div style={{display: !this.state.modalIsOpen ? "block" : "none"}}>
         <Tabs>
           <TabList>
             <Tab>Karttanäkymä</Tab>
@@ -62,7 +64,8 @@ class App extends Component {
             <ParkList isMarkerShown onClick={this.handleStationClick} />
           </TabPanel>
         </Tabs>
-        <ParkModal
+        </div>
+        <ParkCard style={{display: this.state.modalIsOpen ? "block" : "none"}}
           modalIsOpen={this.state.modalIsOpen}
           closeModal={this.closeModal}
           station={this.state.station}

@@ -71,9 +71,8 @@ class ParkChart extends Component {
             dot={false}
             name="Paikkoja vapaana"
           />
-          <CartesianGrid /* stroke="#fa0" */ />
+          <CartesianGrid />
           <XAxis
-            // stroke="#fa0"
             dataKey="Timestamp"
             tickFormatter={
               this.props.history === 1 ? this.timeFormat : this.dateFormat
@@ -81,7 +80,7 @@ class ParkChart extends Component {
             tickCount={4}
             minTickGap={8}
           />
-          <YAxis /* stroke="#fa0" */ />
+          <YAxis width={30} domain={[0, dataMax => (Math.ceil((dataMax+1)/25)*25)]} />
           <Legend />
           <Tooltip labelFormatter={this.dateTimeFormat} />
         </LineChart>

@@ -72,7 +72,7 @@ class ParkMap extends Component {
 }
 
 ParkMap.defaultProps = {
-  center: { lat: 65.009835, lng: 25.484934 },
+  center: { lat: 65.010835, lng: 25.494934 },
   zoom: 14
 };
 
