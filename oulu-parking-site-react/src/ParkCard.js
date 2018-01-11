@@ -16,6 +16,7 @@ const parkCard = props => (
     {props.station &&
       props.station.Freespace !== -1 && (
         <div>
+        <div style={{"text-align": "center"}}>
           <div className="park-buttons">
             <button
               className={
@@ -41,6 +42,7 @@ const parkCard = props => (
             >
               30 VRK
             </button>
+          </div>
           </div>
           <ParkChart
             key={props.station && props.station.ParkingStationId}
