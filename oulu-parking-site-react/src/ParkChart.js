@@ -38,7 +38,7 @@ class ParkChart extends Component {
         this.setState({ items: items, updated: new Date().toISOString() })
       );
   }
-
+  
   dateFormat(x) {
     return DateFormat(x, "dd.mm");
   }
@@ -80,7 +80,10 @@ class ParkChart extends Component {
             tickCount={4}
             minTickGap={8}
           />
-          <YAxis width={30} domain={[0, dataMax => (Math.ceil((dataMax+1)/25)*25)]} />
+          <YAxis
+            width={30}
+            domain={[0, dataMax => Math.ceil((dataMax + 1) / 25) * 25]}
+          />
           <Legend />
           <Tooltip labelFormatter={this.dateTimeFormat} />
         </LineChart>

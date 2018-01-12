@@ -10,28 +10,25 @@ class ParkMap extends Component {
   }
 
   componentDidMount() {
-    //console.log(`Mounting`);
     fetch(`https://api.oulunparkit.com/parkingstations`)
       .then(result => result.json())
       .then(items => this.setState({ items }));
   }
 
   static getColor(element) {
-    if (element.Freespace === -1) return "lightgray";
-    else {
+    if (element.Freespace !== undefined) {
       const free = Math.floor(element.Freespace / element.Totalspace * 100);
-      if (free > 30) return "lightgreen";
-      else if (free > 15) return "lightyellow";
-      else return "palevioletred";
+      if (free < 5) return "palevioletred";
+      if (free < 20) return "lightyellow";
+      return "lightgreen";
     }
+    return "lightgray";
   }
 
   render() {
-    //console.log(`ParkMap: Using data ${JSON.stringify(this.state.items)}`);
-
     const data = this.state.items.map(element => {
       const title = `${element.Name} ${
-        element.Totalspace !== -1
+        element.Freespace !== undefined
           ? `${element.Freespace}/${element.Totalspace}`
           : ""
       }`;

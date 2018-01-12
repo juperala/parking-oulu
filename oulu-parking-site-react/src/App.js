@@ -4,7 +4,6 @@ import ParkHeader from "./ParkHeader";
 import ParkFooter from "./ParkFooter";
 import ParkMap from "./ParkMap";
 import ParkList from "./ParkList";
-//import ParkModal from "./ParkModal";
 import ParkCard from "./ParkCard";
 import "./App.css";
 import "./lit.css";
@@ -49,7 +48,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="c" style={{"padding-top": 0}}>
+      <div className="c" style={{paddingTop: 0}}>
         <ParkHeader />
         <div style={{display: !this.state.modalIsOpen ? "block" : "none"}}>
         <Tabs>

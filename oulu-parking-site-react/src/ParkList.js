@@ -7,31 +7,18 @@ class ParkList extends Component {
   }
 
   componentDidMount() {
-    //console.log(`Mounting`);
     fetch(`https://api.oulunparkit.com/parkingstations`)
       .then(result => result.json())
       .then(items => this.setState({ items }));
   }
 
-  static getColor(element) {
-    if (element.Freespace === -1) return "lightgray";
-    else {
-      const free = Math.floor(element.Freespace / element.Totalspace * 100);
-      if (free > 80) return "lightgreen";
-      else if (free > 25) return "lightyellow";
-      else return "palevioletred";
-    }
-  }
-
   render() {
-    //console.log(`ParkMap: Using data ${JSON.stringify(this.state.items)}`);
     const data = this.state.items.map(element => {
       const status = `${
-        element.Totalspace !== -1
+        element.Totalspace !== undefined
           ? `${element.Freespace} / ${element.Totalspace}`
           : "Ei tilatietoja"
       }`;
-      // const color = ParkList.getColor(element);
 
       return (
         <div
@@ -41,9 +28,9 @@ class ParkList extends Component {
         >
           <h5>{element.Name}</h5>
           <b>Osoite:</b> {element.Address}
-          <br/>
+          <br />
           <b>Vapaat parkkipaikat:</b> {status}
-      </div>
+        </div>
       );
     });
     return <div>{data}</div>;

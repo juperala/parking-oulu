@@ -4,19 +4,19 @@ import "./App.css";
 
 const parkCard = props => (
   <div className="card" style={props.style}>
-    <h4 style={{"margin-bottom":0, "margin-top":0}}>{props.station && props.station.Name}</h4>
-    <p style={{"margin-top":0}}>
+    <h4 style={{marginBottom:0, marginTop:0}}>{props.station && props.station.Name}</h4>
+    <p style={{marginTop:0}}>
       <b>Osoite:</b> {props.station && props.station.Address}
       <br />
       <b>Vapaat parkkipaikat:</b>{" "}
-      {props.station && props.station.Freespace !== -1
+      {props.station && props.station.Freespace !== undefined
         ? props.station.Freespace + " / " + props.station.Totalspace
         : "Ei tilatietoja"}
     </p>
     {props.station &&
-      props.station.Freespace !== -1 && (
+      props.station.Freespace !== undefined && (
         <div>
-        <div style={{"text-align": "center"}}>
+        <div style={{textAlign: "center"}}>
           <div className="park-buttons">
             <button
               className={
