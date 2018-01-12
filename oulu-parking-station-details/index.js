@@ -1,7 +1,5 @@
 "use strict";
 
-console.log("Loading function");
-
 const doc = require("dynamodb-doc");
 const dynamo = new doc.DynamoDB();
 
@@ -11,8 +9,6 @@ const tableName = process.env.tableName;
  * Lambda function handler.
  */
 exports.handler = (event, context, callback) => {
-  //console.log('Received event:', JSON.stringify(event, null, 2));
-
   const done = (err, res) =>
     callback(null, {
       statusCode: err ? "400" : "200",
@@ -42,7 +38,6 @@ exports.handler = (event, context, callback) => {
         ReturnConsumedCapacity: "TOTAL",
         TableName: tableName
       };
-      console.log(`Sending params: ${JSON.stringify(params)}`);
       dynamo.scan(params, done);
       break;
     default:

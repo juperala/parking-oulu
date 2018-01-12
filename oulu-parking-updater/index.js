@@ -1,21 +1,16 @@
 "use strict";
 
-console.log("Loading function");
-
 const stationsUrl =
   "https://www.oulunliikenne.fi/public_traffic_api/parking/parkingstations.php";
 const stationUrl =
   "https://www.oulunliikenne.fi/public_traffic_api/parking/parking_details.php?parkingid=";
 
-const stationsTableName = process.env.stationsTableName;
-const stationStatusTableName = process.env.stationStatusTableName;
-console.log(
-  `Using DynamoDB tables ${stationsTableName}, ${stationStatusTableName}`
-);
-
 const request = require("request");
 const doc = require("dynamodb-doc");
 const dynamo = new doc.DynamoDB();
+
+const stationsTableName = process.env.stationsTableName;
+const stationStatusTableName = process.env.stationStatusTableName;
 
 /**
  * Lambda function handler.
@@ -28,9 +23,7 @@ exports.handler = (event, context, callback) => {
     },
     function(error, response, body) {
       if (!error && response.statusCode === 200) {
-        let stations = parseStations(body["parkingstation"]);
-
-        stations.forEach(element => {
+        body.parkingstation.forEach(element => {
           request(
             {
               url: stationUrl + element.id,
@@ -38,14 +31,30 @@ exports.handler = (event, context, callback) => {
             },
             function(error, response, body) {
               if (!error && response.statusCode === 200) {
-                const address = body["address"];
-                const timestamp = body["timestamp"];
-                const freespace = body["freespace"];
-                const totalspace = body["totalspace"];
-                element.addDetails(timestamp, address, freespace, totalspace);
+                let info = {
+                  ParkingStationId: Number(element.id),
+                  Name: element.name,
+                  Address: body.address,
+                  Coordinates: JSON.parse(element.geom).coordinates
+                };
+                info = Object.assign(
+                  info,
+                  body.freespace && { Freespace: body.freespace },
+                  body.totalspace && { Totalspace: body.totalspace }
+                );
+                putItemToTable(info, stationsTableName);
 
-                updateStationInfo(element);
-                updateStationStatus(element);
+                let status = {
+                  ParkingStationId: Number(element.id),
+                  Timestamp: formatDateToISO(body.timestamp)
+                };
+                status = Object.assign(
+                  status,
+                  body.freespace && { Freespace: body.freespace },
+                  body.totalspace && { Totalspace: body.totalspace }
+                );
+
+                putItemToTable(status, stationStatusTableName);
               }
             }
           );
@@ -55,96 +64,27 @@ exports.handler = (event, context, callback) => {
   );
 };
 
-function parseStations(stationList) {
-  let stations = stationList.map(element => {
-    const id = Number(element["id"]);
-    const geo = JSON.parse(element["geom"])["coordinates"];
-    const name = element["name"];
-    return new Station(id, geo, name);
-  });
-  return stations;
-}
-
-function updateStationInfo(station) {
-  var params = {
-    Item: {
-      ParkingStationId: station.id,
-      Name: station.name,
-      Address: station.address,
-      Coordinates: station.geo,
-      Freespace: station.freespace,
-      Totalspace: station.totalspace
-    },
+function putItemToTable(item, table) {
+  const params = {
+    Item: item,
     ReturnConsumedCapacity: "TOTAL",
-    TableName: stationsTableName
+    TableName: table
   };
-  console.log(`Updating station base information: ${JSON.stringify(params)}`);
-  dynamo.putItem(params, function(err, data, id = station.id) {
+
+  dynamo.putItem(params, function(err, data, input = params) {
     if (err) {
       console.log(
-        `Failure updating base information (ParkingStationId: ${id}): ${err}`,
+        `Failed putting item ${JSON.stringify(input)}: ${err}`,
         err.stack
-      );
-    } else {
-      console.log(
-        `Success updating base information (ParkingStationId: ${id}): ${data}`
-      );
-    }
-  });
-}
-
-function updateStationStatus(station) {
-  var params = {
-    Item: {
-      ParkingStationId: station.id,
-      Timestamp: formatDateToISO(station.timestamp),
-      ...(typeof station.freespace !== undefined && {
-        Freespace: station.freespace
-      }),
-      ...(typeof station.totalspace !== undefined && {
-        Totalspace: station.totalspace
-      })
-    },
-    ReturnConsumedCapacity: "TOTAL",
-    TableName: stationStatusTableName
-  };
-  console.log(`Updating station status information: ${JSON.stringify(params)}`);
-  dynamo.putItem(params, function(err, data, id = station.id) {
-    if (err) {
-      console.log(
-        `Failure updating station status (ParkingStationId: ${id}): ${err}`,
-        err.stack
-      );
-    } else {
-      console.log(
-        `Success updating station status (ParkingStationId: ${id}): ${data}`
       );
     }
   });
 }
 
 function formatDateToISO(original) {
-  // 29.11.2017 13:50:37
+  // original: dd.mm.yyyy hh:mm:ss
   const [date, time] = original.split(" ");
   const [day, month, year] = date.split(".");
   const [hour, minutes, seconds] = time.split(":");
   return new Date(year, month - 1, day, hour, minutes, seconds).toISOString();
-}
-
-/**
- * Class presenting parking station.
- */
-class Station {
-  constructor(id, geo, name) {
-    this.id = id;
-    this.name = name;
-    this.geo = geo;
-  }
-
-  addDetails(timestamp, address, freespace, totalspace) {
-    this.timestamp = timestamp;
-    this.address = address;
-    if (typeof freespace !== undefined) this.freespace = freespace;
-    if (typeof totalspace !== undefined) this.totalspace = totalspace;
-  }
 }
