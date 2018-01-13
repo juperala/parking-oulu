@@ -1,40 +1,28 @@
-import React, { Component } from "react";
+import React from "react";
 
-class ParkList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { items: [] };
-  }
+const parkList = props => {
+  const data = props.stations.map(station => {
+    const status = `${
+      station.Totalspace !== undefined
+        ? `${station.Freespace} / ${station.Totalspace}`
+        : "Ei tilatietoja"
+    }`;
 
-  componentDidMount() {
-    fetch(`https://api.oulunparkit.com/parkingstations`)
-      .then(result => result.json())
-      .then(items => this.setState({ items }));
-  }
+    return (
+      <div
+        className="card park-card"
+        key={station.ParkingStationId}
+        onClick={() => props.onClick(station)}
+      >
+        <h5>{station.Name}</h5>
+        <b>Osoite:</b> {station.Address}
+        <br />
+        <b>Vapaat parkkipaikat:</b> {status}
+      </div>
+    );
+  });
 
-  render() {
-    const data = this.state.items.map(element => {
-      const status = `${
-        element.Totalspace !== undefined
-          ? `${element.Freespace} / ${element.Totalspace}`
-          : "Ei tilatietoja"
-      }`;
+  return <div>{data}</div>;
+};
 
-      return (
-        <div
-          className="card park-card"
-          key={element.ParkingStationId}
-          onClick={() => this.props.onClick(element)}
-        >
-          <h5>{element.Name}</h5>
-          <b>Osoite:</b> {element.Address}
-          <br />
-          <b>Vapaat parkkipaikat:</b> {status}
-        </div>
-      );
-    });
-    return <div>{data}</div>;
-  }
-}
-
-export default ParkList;
+export default parkList;

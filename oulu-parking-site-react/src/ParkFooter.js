@@ -7,11 +7,15 @@ const parkFooter = () => (
     <hr />
     <div className="justify">
       <h5>
-        Oulun Parkit - Oulun pysäköintitalojen tilatiedot netissä. &copy; 2017.
+        Oulun Parkit - Oulun pysäköintitalojen tilatiedot netissä. &copy; 2017 Juho Perälä.
       </h5>
       <p>
         <a href="https://github.com/juperala/parking-oulu">
-          <img className="park-gh-logo" src={ghlogo} alt="Projekti GitHubissa." />
+          <img
+            className="park-gh-logo"
+            src={ghlogo}
+            alt="Projekti GitHubissa."
+          />
         </a>
       </p>
     </div>

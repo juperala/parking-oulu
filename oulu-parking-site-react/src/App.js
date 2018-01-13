@@ -13,30 +13,31 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: 7,
+      stations: [],
       station: null,
-      modalIsOpen: false
+      history: 7
     };
     this.handleStationClick = this.handleStationClick.bind(this);
     this.handleSetHistory = this.handleSetHistory.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.handleCloseDetails = this.handleCloseDetails.bind(this);
   }
 
-  openModal() {
-    this.setState({ modalIsOpen: true });
+  componentDidMount() {
+    fetch(`https://api.oulunparkit.com/parkingstations`)
+      .then(result => result.json())
+      .then(stations => this.setState({ stations }));
   }
 
-  closeModal() {
+  handleCloseDetails() {
     this.setState({
-      modalIsOpen: false,
-      history: 7 });
+      station: null,
+      history: 7
+    });
   }
 
   handleStationClick(s) {
     this.setState({
-      station: s,
-      modalIsOpen: true
+      station: s
     });
   }
 
@@ -48,27 +49,36 @@ class App extends Component {
 
   render() {
     return (
-      <div className="c" style={{paddingTop: 0}}>
+      <div className="c" style={{ paddingTop: 0 }}>
         <ParkHeader />
-        <div style={{display: !this.state.modalIsOpen ? "block" : "none"}}>
-        <Tabs>
-          <TabList>
-            <Tab>Karttanäkymä</Tab>
-            <Tab>Listanäkymä</Tab>
-          </TabList>
-          <TabPanel>
-            <ParkMap isMarkerShown onClick={this.handleStationClick} />
-          </TabPanel>
-          <TabPanel>
-            <ParkList isMarkerShown onClick={this.handleStationClick} />
-          </TabPanel>
-        </Tabs>
+        <div
+          style={{ display: this.state.station === null ? "block" : "none" }}
+        >
+          <Tabs>
+            <TabList>
+              <Tab>Karttanäkymä</Tab>
+              <Tab>Listanäkymä</Tab>
+            </TabList>
+            <TabPanel>
+              <ParkMap
+                isMarkerShown
+                onClick={this.handleStationClick}
+                stations={this.state.stations}
+              />
+            </TabPanel>
+            <TabPanel>
+              <ParkList
+                onClick={this.handleStationClick}
+                stations={this.state.stations}
+              />
+            </TabPanel>
+          </Tabs>
         </div>
-        <ParkCard style={{display: this.state.modalIsOpen ? "block" : "none"}}
-          modalIsOpen={this.state.modalIsOpen}
-          closeModal={this.closeModal}
+        <ParkCard
+          style={{ display: this.state.station !== null ? "block" : "none" }}
           station={this.state.station}
           history={this.state.history}
+          handleCloseDetails={this.handleCloseDetails}
           handleSetHistory={this.handleSetHistory}
         />
         <ParkFooter />
