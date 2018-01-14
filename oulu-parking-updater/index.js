@@ -39,8 +39,8 @@ exports.handler = (event, context, callback) => {
                 };
                 info = Object.assign(
                   info,
-                  body.freespace && { Freespace: body.freespace },
-                  body.totalspace && { Totalspace: body.totalspace }
+                  body.freespace && { Freespace: Number(body.freespace) },
+                  body.totalspace && { Totalspace: Number(body.totalspace) }
                 );
                 putItemToTable(info, stationsTableName);
 
@@ -50,8 +50,8 @@ exports.handler = (event, context, callback) => {
                 };
                 status = Object.assign(
                   status,
-                  body.freespace && { Freespace: body.freespace },
-                  body.totalspace && { Totalspace: body.totalspace }
+                  body.freespace && { Freespace: Number(body.freespace) },
+                  body.totalspace && { Totalspace: Number(body.totalspace) }
                 );
 
                 putItemToTable(status, stationStatusTableName);
