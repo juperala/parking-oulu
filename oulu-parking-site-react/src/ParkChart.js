@@ -39,7 +39,7 @@ class ParkChart extends Component {
         this.setState({ items: items, updated: new Date().toISOString() })
       );
   }
-  
+
   dateFormat(x) {
     return DateFormat(x, "dd.mm");
   }
@@ -53,7 +53,15 @@ class ParkChart extends Component {
   }
 
   render() {
-    const data = Array.from(this.state.items);
+    //const data = Array.from(this.state.items);
+    const data = this.state.items.map(item => {
+      return {
+        ParkingStationId: item.ParkingStationId,
+        Timestamp: item.Timestamp,
+        Freespace: Number(item.Freespace),
+        Totalspace: Number(item.Totalspace)
+      };
+    });
 
     console.log(`Using data ${JSON.stringify(data)}`);
 
@@ -73,7 +81,7 @@ class ParkChart extends Component {
             stroke="#fa0"
             dot={false}
             name={Localization.tableFree}
-            />
+          />
           <CartesianGrid />
           <XAxis
             dataKey="Timestamp"
