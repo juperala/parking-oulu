@@ -1,11 +1,12 @@
 import React from "react";
+import Localization from "./Localization";
 
 const parkList = props => {
   const data = props.stations.map(station => {
     const status = `${
       station.Totalspace !== undefined
         ? `${station.Freespace} / ${station.Totalspace}`
-        : "Ei tilatietoja"
+        : Localization.notAvailable
     }`;
 
     return (
@@ -15,9 +16,9 @@ const parkList = props => {
         onClick={() => props.onClick(station)}
       >
         <h5>{station.Name}</h5>
-        <b>Osoite:</b> {station.Address}
+        <b>{Localization.address}</b> {station.Address}
         <br />
-        <b>Vapaat parkkipaikat:</b> {status}
+        <b>{Localization.freespace}</b> {status}
       </div>
     );
   });

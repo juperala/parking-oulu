@@ -1,5 +1,6 @@
 import React from "react";
 import ParkChart from "./ParkChart";
+import Localization from "./Localization";
 import "./App.css";
 
 const parkCard = props => (
@@ -8,12 +9,12 @@ const parkCard = props => (
       {props.station && props.station.Name}
     </h4>
     <p style={{ marginTop: 0 }}>
-      <b>Osoite:</b> {props.station && props.station.Address}
+      <b>{Localization.address}</b> {props.station && props.station.Address}
       <br />
-      <b>Vapaat parkkipaikat:</b>{" "}
+      <b>{Localization.freespace}</b>{" "}
       {props.station && props.station.Freespace !== undefined
         ? props.station.Freespace + " / " + props.station.Totalspace
-        : "Ei tilatietoja"}
+        : Localization.notAvailable}
     </p>
     {props.station &&
       props.station.Freespace !== undefined && (
@@ -26,7 +27,7 @@ const parkCard = props => (
                 }
                 onClick={() => props.handleSetHistory(1)}
               >
-                1 VRK
+                {Localization.formatString(Localization.xDay, 1)}
               </button>
               <button
                 className={
@@ -34,7 +35,7 @@ const parkCard = props => (
                 }
                 onClick={() => props.handleSetHistory(7)}
               >
-                7 VRK
+                {Localization.formatString(Localization.xDays, 7)}
               </button>
               <button
                 className={
@@ -42,7 +43,7 @@ const parkCard = props => (
                 }
                 onClick={() => props.handleSetHistory(30)}
               >
-                30 VRK
+                {Localization.formatString(Localization.xDays, 30)}
               </button>
             </div>
           </div>
@@ -54,7 +55,7 @@ const parkCard = props => (
         </div>
       )}
     <button className="btn primary" onClick={props.handleCloseDetails}>
-      &#8592; Takaisin
+      {Localization.back}
     </button>
   </div>
 );

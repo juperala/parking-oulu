@@ -1,4 +1,5 @@
 import React from "react";
+import Localization from "./Localization";
 import "./App.css";
 import ghlogo from "./GitHub.png";
 
@@ -6,15 +7,13 @@ const parkFooter = () => (
   <footer>
     <hr />
     <div className="justify">
-      <h5>
-        Oulun Parkit - Oulun pysäköintitalojen tilatiedot netissä. &copy; 2017 Juho Perälä.
-      </h5>
+      <h5>{Localization.appFooter}</h5>
       <p>
         <a href="https://github.com/juperala/parking-oulu">
           <img
             className="park-gh-logo"
             src={ghlogo}
-            alt="Projekti GitHubissa."
+            alt="GitHub"
           />
         </a>
       </p>

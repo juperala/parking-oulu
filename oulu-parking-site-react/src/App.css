@@ -48,6 +48,10 @@
   opacity:.6
 }
 
-.maxheight {
-  height: 100%;
+.boldable:hover {
+  font-weight: bold;
+}
+
+.normable {
+  font-weight: bold;
 }

@@ -9,6 +9,7 @@ import {
   Legend,
   Tooltip
 } from "recharts";
+import Localization from "./Localization";
 import DateFormat from "dateformat";
 
 class ParkChart extends Component {
@@ -48,11 +49,13 @@ class ParkChart extends Component {
   }
 
   dateTimeFormat(x) {
-    return "Aikaleima: " + DateFormat(x, "dd.mm.yy HH:MM");
+    return Localization.timestamp + DateFormat(x, "dd.mm.yy HH:MM");
   }
 
   render() {
     const data = Array.from(this.state.items);
+
+    console.log(`Using data ${JSON.stringify(data)}`);
 
     return (
       <ResponsiveContainer width={"100%"} height={300}>
@@ -62,15 +65,15 @@ class ParkChart extends Component {
             dataKey="Totalspace"
             stroke="#204a87"
             dot={false}
-            name="Paikkoja yhteensä"
+            name={Localization.tableTotal}
           />
           <Line
             type="monotone"
             dataKey="Freespace"
             stroke="#fa0"
             dot={false}
-            name="Paikkoja vapaana"
-          />
+            name={Localization.tableFree}
+            />
           <CartesianGrid />
           <XAxis
             dataKey="Timestamp"
