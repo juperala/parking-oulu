@@ -4,7 +4,7 @@ const strings = new LocalizedStrings({
   fi: {
     appTitle: "Oulun Parkit",
     appFooter:
-      "Oulun Parkit - Oulun pysäköintitalojen tilatiedot netissä. © 2017 Juho Perälä.",
+      "Oulun Parkit - Oulun pysäköintitalojen tilatiedot netissä. © 2018 Juho Perälä.",
     mapView: "Karttanäkymä",
     listView: "Listanäkymä",
     address: "Osoite:",
@@ -20,7 +20,7 @@ const strings = new LocalizedStrings({
   en: {
     appTitle: "Oulu Parking",
     appFooter:
-      "Oulu Parking - Utilization and statistics of Oulu parking stations online. © 2017 Juho Perälä.",
+      "Oulu Parking - Utilization and statistics of Oulu parking stations online. © 2018 Juho Perälä.",
     mapView: "Map view",
     listView: "List view",
     address: "Address:",
