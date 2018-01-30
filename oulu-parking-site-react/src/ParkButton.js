@@ -9,6 +9,9 @@ const parkButton = styled.button`
   border: 2px solid ${props => props.color};
   border-radius: 3px;
   position: sticky;
+  &:hover {
+    font-weight: bold;
+  }
 `;
 
 export default parkButton;

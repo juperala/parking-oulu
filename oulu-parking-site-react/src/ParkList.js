@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import Localization from "./Localization";
 
 const parkList = props => {
@@ -7,13 +8,13 @@ const parkList = props => {
       station.Totalspace !== undefined
         ? `${station.Freespace} / ${station.Totalspace}`
         : Localization.notAvailable
-    }`;
+      }`;
 
     return (
       <div
         className="card park-card"
         key={station.ParkingStationId}
-        onClick={() => props.onClick(station)}
+        onClick={() => props.history.push(`/station/${station.ParkingStationId}`)}
       >
         <h5>{station.Name}</h5>
         <b>{Localization.address}</b> {station.Address}
@@ -26,4 +27,4 @@ const parkList = props => {
   return <div>{data}</div>;
 };
 
-export default parkList;
+export default withRouter(parkList);

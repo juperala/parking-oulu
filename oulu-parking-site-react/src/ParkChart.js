@@ -32,7 +32,7 @@ class ParkChart extends Component {
 
     const url = `https://api.oulunparkit.com/parkingstationdetails?ParkingStationId=${
       this.props.stationId
-    }&from=${from.toISOString()}`;
+      }&from=${from.toISOString()}`;
     fetch(url)
       .then(result => result.json())
       .then(items =>

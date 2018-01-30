@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import GoogleMapReact from "google-map-react";
 import ParkButton from "./ParkButton";
 import "./App.css";
@@ -28,7 +29,7 @@ const parkMap = props => {
         key={station.ParkingStationId}
         lat={station.Coordinates[1]}
         lng={station.Coordinates[0]}
-        onClick={() => props.onClick(station)}
+        onClick={() => props.history.push(`/station/${station.ParkingStationId}`)}
       >
         {title}
       </ParkButton>
@@ -60,4 +61,4 @@ parkMap.defaultProps = {
   zoom: 14
 };
 
-export default parkMap;
+export default withRouter(parkMap);

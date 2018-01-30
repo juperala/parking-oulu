@@ -1,11 +1,12 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import Localization from "./Localization";
 import logo from "./logo.svg";
 import "./App.css";
 
 const parkHeader = props => (
   <div className="justify">
-    <header className="park-main-header">
+    <header className="park-main-header" onClick={() => props.history.push(`/`)}>
       <img src={logo} className="park-logo" alt="logo" />
       <h3 className="park-title">{Localization.appTitle}</h3>
     </header>
@@ -29,4 +30,4 @@ const parkHeader = props => (
   </div>
 );
 
-export default parkHeader;
+export default withRouter(parkHeader);
