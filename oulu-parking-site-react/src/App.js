@@ -37,13 +37,13 @@ class App extends Component {
         <ParkHeader handleLanguage={this.handleLanguage} />
         <Route path="/:path(|list)" exact component={ParkNav} />
         <Switch>
-          <Route path="/" exact render={() => <ParkMap
-            stations={this.state.stations}
-          />} />
           <Route path="/list" render={() => <ParkList
             stations={this.state.stations}
           />} />
           <Route path="/station/:id" render={() => <ParkCard
+            stations={this.state.stations}
+          />} />
+          <Route path="/" render={() => <ParkMap
             stations={this.state.stations}
           />} />
         </Switch>
