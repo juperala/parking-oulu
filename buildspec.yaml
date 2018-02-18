@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+  pre_build:
+    commands:
+  build:
+    commands:
+      - echo Build started on `date`
+      - cd oulu-parking-site-react && npm run-script build
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - oulu-parking-site-react/**/*
