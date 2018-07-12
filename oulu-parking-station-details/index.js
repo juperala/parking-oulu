@@ -10,32 +10,17 @@ const tableName = process.env.tableName;
  */
 exports.handler = (event, context, callback) => {
   var params = null;
-  var result = [];
 
   const done = (err, data) => {
     callback(null, {
       statusCode: err ? "400" : "200",
-      body: err ? err.message : JSON.stringify(data),
+      body: err ? err.message : JSON.stringify(data["Items"]),
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"
       }
     });
-  }
-
-  const onScan = (err, res) => {
-    if (err) {
-      done(err, result);
-    } else {
-      result.push(...(res["Items"]));
-      if (typeof res.LastEvaluatedKey != 'undefined') {
-        params.ExclusiveStartKey = res.LastEvaluatedKey;
-        dynamo.scan(params, onScan);
-      } else {
-        done(err, result);
-      }
-    }
-  }
+  };
 
   switch (event.httpMethod) {
     case "GET":
@@ -43,7 +28,7 @@ exports.handler = (event, context, callback) => {
       const start = event.queryStringParameters.from;
       const end = event.queryStringParameters.to;
       params = {
-        FilterExpression:
+        KeyConditionExpression:
           "(ParkingStationId = :id) AND (#timestamp between :start and :stop)",
         ExpressionAttributeValues: {
           ":id": Number(stationId),
@@ -56,7 +41,7 @@ exports.handler = (event, context, callback) => {
         ReturnConsumedCapacity: "TOTAL",
         TableName: tableName
       };
-      dynamo.scan(params, onScan);
+      dynamo.query(params, done);
       break;
     default:
       done(new Error(`Unsupported method "${event.httpMethod}"`));
