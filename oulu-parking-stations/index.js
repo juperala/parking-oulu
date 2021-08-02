@@ -1,7 +1,8 @@
 "use strict";
 
-const doc = require("dynamodb-doc");
-const dynamo = new doc.DynamoDB();
+const AWS = require('aws-sdk');
+AWS.config.update({region: 'eu-west-1'});
+const dynamo = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 
 const tableName = process.env.tableName;
 
