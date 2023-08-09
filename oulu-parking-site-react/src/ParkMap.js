@@ -39,7 +39,7 @@ const parkMap = props => {
   let apiKey = null;
   if (process.env.NODE_ENV !== "development") {
     apiKey = {
-      key: "AIzaSyBTn6wFPf0DHTf7UL9CZ_hHbI2dldqdzUk"
+      key: ""
     };
   }
 
